@@ -10,11 +10,11 @@ import SwiftUI
 struct CameraView: View {
     @State var camera = Camera()
     @State var didSetupCamera = Bool()
-    @State var imageData: Data? // image data from camera
     
+    @Binding var imageData: Data? // image data from camera
+    @Binding var hasPhoto: Bool
     @Binding var showCamera: Bool
     @Binding var showAccessError: Bool
-    @Binding var hasPhoto: Bool
     
     @Environment(\.scenePhase) var scenePhase // detect lifecycle of app
 
@@ -37,6 +37,13 @@ struct CameraView: View {
                 .ignoresSafeArea()
             
             cameraControls
+        }
+        .onChange(of: camera.hasPhoto) { _, newValue in
+            if newValue {
+                imageData = camera.photoData
+                hasPhoto = true
+                camera.resetSession()
+            }
         }
     }
     

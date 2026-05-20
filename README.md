@@ -1,5 +1,6 @@
 ## One Shot Object Detector with Vision and CoreML
-Using Ultralytics YOLOv11 CoreML models as the object detector models
+Using Ultralytics YOLOv11 CoreML models as the object detector models. <br>
+This implementation prioritize SwiftUI usage as much as possible, except in the Camera which still need UIKit :(
 
 Big thanks to these references: <br>
 - [x] https://developer.apple.com/documentation/vision/recognizing-objects-in-live-capture

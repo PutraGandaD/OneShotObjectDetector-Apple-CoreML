@@ -12,7 +12,6 @@ struct ContentView: View {
     @State private var imageData: Data? = nil
     @State private var showAccessError: Bool = false
     @State private var hasPhoto: Bool = false
-
     
     var body: some View {
         NavigationStack {

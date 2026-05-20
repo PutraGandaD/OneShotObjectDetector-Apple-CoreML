@@ -1,0 +1,72 @@
+//
+//  CameraView.swift
+//  PoC_OneShotObjectDetector
+//
+//  Created by Putra Ganda Dewata on 20/05/26.
+//
+
+import SwiftUI
+
+struct CameraView: View {
+    @State var camera = Camera()
+    @State var didSetupCamera = Bool()
+    @State var imageData: Data? // image data from camera
+    
+    @Binding var showCamera: Bool
+    @Binding var showAccessError: Bool
+    @Binding var hasPhoto: Bool
+    
+    @Environment(\.scenePhase) var scenePhase // detect lifecycle of app
+
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            CameraPreview(camera: $camera)
+                .task {
+                    if await camera.checkCameraAuthorization() {
+                        didSetupCamera = camera.setup()
+                    } else {
+                        showAccessError = true
+                        showCamera = false
+                    }
+                    
+                    if !didSetupCamera {
+                        print("Camera setup failed.")
+                        showCamera = false
+                    }
+                }
+                .ignoresSafeArea()
+            
+            cameraControls
+        }
+    }
+    
+    @ViewBuilder var cameraControls: some View {
+        Button {
+            camera.capturePhoto()
+        } label: {
+            ZStack {
+                Circle()
+                    .stroke(.white, lineWidth: 2)
+                    .frame(width: 70)
+
+                Circle()
+                    .fill(.white)
+                    .frame(width: 60)
+            }
+        }
+        .buttonStyle(CaptureButtonStyle())
+    }
+}
+
+struct CaptureButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.85 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+    }
+}
+
+
+#Preview {
+//    CameraView()
+}

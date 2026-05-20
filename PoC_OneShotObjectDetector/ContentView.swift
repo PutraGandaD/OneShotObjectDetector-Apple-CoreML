@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var showCamera: Bool = false
+    @State private var hasPhoto: Bool = false
+    @State private var imageData: Data? = nil
+    @State private var showAccessError: Bool = false
+
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            CameraView(
+                showCamera: $showCamera,
+                showAccessError: $showAccessError,
+                hasPhoto: $hasPhoto
+            )
         }
-        .padding()
     }
 }
 
